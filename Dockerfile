@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Copy solution and csproj files
 COPY OrderManagementSystem/*.sln ./OrderManagementSystem/
-COPY OrderManagementSystem/*.csproj ./OrderManagementSystem/
+COPY OrderManagementSystem/OrderManagement.Application/*.csproj ./OrderManagementSystem/OrderManagement.Application/
 
 # Restore dependencies
 RUN dotnet restore
