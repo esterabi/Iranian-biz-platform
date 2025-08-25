@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 
 # Copy solution and csproj files
-COPY *.sln ./
+COPY OrderManagementSystem/*.sln ./OrderManagementSystem/
 COPY OrderManagementSystem/*.csproj ./OrderManagementSystem/
 
 # Restore dependencies
