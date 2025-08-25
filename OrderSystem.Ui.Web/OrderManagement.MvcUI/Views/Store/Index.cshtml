@@ -1,0 +1,159 @@
+﻿@model OrderManagement.MvcUI.Models.StorePageViewModel
+@{
+    ViewData["Title"] = "فروشگاه";
+    Layout = "_Layout";
+}
+
+@section Styles
+{
+    <style>
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .card-img-container {
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">فروشگاه</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a asp-controller="Profile" asp-action="Complete"
+                   class="btn btn-outline-secondary btn-sm"> @Model.User.UserName</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">سبد خرید (@Model.Cart.Items.Count)</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Account/Logout">خروج</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h3 class="text-center">محصولات</h3>
+    <div class="row">
+        @foreach (var product in Model.Products)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 d-flex flex-column">
+                    <!-- تصویر محصول با حداکثر ارتفاع و اسکرول داخلی -->
+                    <div class="card-img-container" style="max-height: 300px; overflow: hidden;">
+                        <img src="@product.ImageUrl" 
+                             class="card-img-top img-fluid" 
+                             alt="@product.Name" 
+                             style="object-fit: contain; width: 100%; height: 100%;">
+                    </div>
+        
+                    <!-- محتوای کارت با موقعیت ثابت در پایین -->
+                    <div class="card-body d-flex flex-column" style="min-height: 180px;">
+                        <h5 class="card-title" style="min-height: 48px;">@product.Name</h5>
+            
+                        <!-- این div همیشه در پایین می‌ماند -->
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <p class="text-success mb-0 fw-bold">@product.Price.ToString("N0") تومان</p>
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" 
+                                   class="btn btn-outline-secondary btn-sm">جزئیات</a>
+                            </div>
+                
+                            <form asp-action="AddToCart" method="post">
+                                <input type="hidden" name="productId" value="@product.Id" />
+                                <button type="submit" class="btn btn-primary w-100 py-2">
+                                    <i class="fas fa-cart-plus me-1"></i> افزودن به سبد
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <h4 class="mt-5">🛒 سبد خرید</h4>
+    @if (!Model.Cart.Items.Any())
+    {
+        <p class="text-muted">سبد خرید شما خالی است.</p>
+    }
+    else
+    {
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>نام کالا</th>
+                <th>تعداد</th>
+                <th>موجودی</th>
+                <th>حذف</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Cart.Items)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.StockQuantity</td>
+                    <td><button class="btn btn-warning w-75 btn-sm delete-btn" data-product-id="@item.ProductId">حذف</button></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <form asp-action="PlaceOrder" method="post">
+            <button type="submit" class="btn btn-success w-100">ثبت سفارش</button>
+        </form>
+    }
+
+    <h4 class="mt-5">👤 پروفایل کاربر</h4>
+    <ul class="list-group">
+        <li class="list-group-item">نام: @Model.User.UserName</li>
+        <li class="list-group-item">ایمیل: @Model.User.UserName</li>
+    </ul>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function() {
+            $('.delete-btn').click(function() {
+                var productId = $(this).data('product-id');
+                if (confirm('آیا از حذف این محصول مطمئنید؟')) {
+                    $.ajax({
+                        url: `/Cart/DeleteCart?productId=${productId}`,
+                        type: 'DELETE',
+                        headers: {
+                            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function() {
+                            location.reload(); // یا حذف سطر از جدول با `$(this).closest('tr').remove()`
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

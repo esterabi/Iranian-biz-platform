@@ -1,0 +1,50 @@
+﻿@model OrderManagement.MvcUI.Models.CustomerProfileViewModel
+@{
+    ViewData["Title"] = "تکمیل پروفایل";
+    Layout = "_Layout";
+}
+
+<h2 class="text-center mt-4">تکمیل اطلاعات مشتری</h2>
+
+<form asp-action="Complete" method="post" class="mt-4 w-50 mx-auto">
+    <input type="hidden" asp-for="UserId" />
+
+    <div class="form-group mb-3">
+        <label>نام</label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label>نام خانوادگی</label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label>شماره موبایل</label>
+        <input asp-for="Mobile" class="form-control" />
+        <span asp-validation-for="Mobile" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label>آدرس</label>
+        <textarea asp-for="Address" class="form-control"></textarea>
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label>جنسیت</label>
+        <select asp-for="Gender" class="form-control">
+            <option value="Male">مرد</option>
+            <option value="Female">زن</option>
+        </select>
+        <span asp-validation-for="Gender" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">ثبت اطلاعات</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

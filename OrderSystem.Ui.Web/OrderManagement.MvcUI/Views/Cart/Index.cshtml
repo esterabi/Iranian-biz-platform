@@ -1,0 +1,38 @@
+﻿@model OrderManagement.MvcUI.Models.CartViewModel
+@{
+    ViewData["Title"] = "سبد خرید";
+    Layout = "_Layout";
+}
+
+<h2 class="text-center mt-4">سبد خرید</h2>
+
+@if (!Model.Items.Any())
+{
+    <p class="text-center text-muted">سبد خرید شما خالی است.</p>
+}
+else
+{
+    <table class="table table-bordered mt-4">
+        <thead class="table-dark text-center">
+        <tr>
+            <th>نام کالا</th>
+            <th>تعداد</th>
+            <th>موجودی</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>@item.StockQuantity</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <form asp-action="PlaceOrder" method="post">
+        <button type="submit" class="btn btn-success w-100 mt-3">ثبت سفارش</button>
+    </form>
+}

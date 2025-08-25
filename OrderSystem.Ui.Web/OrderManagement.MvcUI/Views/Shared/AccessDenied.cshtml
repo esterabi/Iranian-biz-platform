@@ -1,0 +1,28 @@
+@{
+ViewData["Title"] = "عدم دسترسی";
+Layout = "_Layout";
+}
+
+<div class="container text-center mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h3><i class="fas fa-ban"></i> دسترسی غیرمجاز</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger">
+                        <h4 class="alert-heading">شما مجوز دسترسی به این بخش را ندارید!</h4>
+                        <p>برای دسترسی به این بخش باید دارای نقش ادمین باشید.</p>
+                    </div>
+                    <img src="/images/access-denied.png" alt="Access Denied" class="img-fluid mb-4" style="max-height: 300px;">
+                    <div>
+                        <a href="/" class="btn btn-primary">
+                            <i class="fas fa-home"></i> بازگشت به صفحه اصلی
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

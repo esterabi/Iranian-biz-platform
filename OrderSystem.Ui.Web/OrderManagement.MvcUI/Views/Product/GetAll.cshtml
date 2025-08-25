@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<OrderManagement.MvcUI.Dtos.ProductDto>
+@{
+    ViewData["Title"] = "لیست محصولات";
+    Layout = "_Layout";
+}
+
+<h1>لیست محصولات</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>نام</th>
+        <th>دسته‌بندی</th>
+        <th>موجودی</th>
+        <th>قیمت</th>
+        <th>توضیحات</th>
+        <th>عملیات</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var product in Model)
+    {
+        <tr>
+            <td>@product.Name</td>
+            <td>@product.Category</td>
+            <td>@product.StockQuantity</td>
+            <td>@product.Price.ToString("N0") تومان</td>
+            <td>@product.Description</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning">ویرایش</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-success">افزودن محصول جدید</a>
